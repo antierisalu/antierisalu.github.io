@@ -3,7 +3,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-const PORT = 8080;
+const PORT = 443;
 const staticDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'static');
 
 const server = http.createServer((req, res) => {
