@@ -3,25 +3,27 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>01 Graphql </title>
+    <title>01 Graphql</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="icon" type="image/png" sizes="192x192" href="static/favicon-192x192.png">
     <link rel='stylesheet' type='text/css' media='screen' href='static/main.css'>
-    <script src='buttons.js'></script>
+    <script src='js/buttons.js'></script>
+    <script src='js/credentials.js'></script>
 </head>
 <body>
     <div class="loginPage">
         <a>Login with 01 credentials</a><br>
         <input class="loginInput" placeholder="Username or E-mail"><br>
-        <input class="passwordInput" placeholder="Password"><br>
-        <button class="loginButton" onclick="logInButton()" type="button">Login</button>
+        <input class="passwordInput" type="password" placeholder="Password"><br>
+        <button class="logInButton" onclick="logInButton()" type="button">Login</button><br>
+        <a class="errorOnPage" href="/"></a>
     </div>
 
     <div class="indexPage">
         <div class="topBar">
             <button class="topBarUserName">topBarUserName</button>
-            <a class="topBarTitle" href="/">back to / or "refresh"</a>
-            <button class="topBarLogOut" onclick="logOutButton()" type="button">topBarLogOut</button>
+            <a class="topBarTitle">01</a>
+            <button class="logOutButton" onclick="logOutButton()" type="button">topBarLogOut</button>
         </div>
         <div class="boxes">
             
