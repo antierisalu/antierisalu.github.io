@@ -1,0 +1,67 @@
+* {
+    background-color: rgb(20, 0, 20);
+    color: gainsboro;
+    font-family: 'Courier New', Courier, monospace;
+    scrollbar-color:  rgb(48, 0, 68) rgb(20,0,20);
+    border-radius: 4px;
+}
+
+button, input {
+    border-radius: 4px;
+    width: 10rem;
+}
+
+.loginPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.indexPage{
+    display: none;
+}
+
+.topBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgb(48, 0, 68);
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.boxes {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: auto auto auto; 
+    height: 90vh; 
+    gap: 10px; 
+    margin: 10px;
+}
+
+.boxes > .box:first-child {
+    grid-column: span 2;
+}
+
+.box {
+    border: 1px solid rgb(48, 0, 68); 
+    padding: 10px; 
+    display: grid; 
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    
+}
+
+.boxData {
+    margin: 4px
+}
+
+
