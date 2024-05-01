@@ -1,3 +1,4 @@
+
 async function login(usernameOrEmail, password) {
   const credentials = `${usernameOrEmail}:${password}`;
   const encodedCredentials = btoa(credentials);
@@ -16,8 +17,7 @@ async function login(usernameOrEmail, password) {
   
   const data = await response.json();
   console.log(data);
-
-  const jwt = data.jwt;
+  const jwt = data;
   localStorage.setItem('jwt', jwt);
   return jwt;
 }
@@ -26,4 +26,8 @@ async function login(usernameOrEmail, password) {
     // Clear JWT from local storage
     localStorage.removeItem('jwt');
   }
-  
+
+
+ 
+
+

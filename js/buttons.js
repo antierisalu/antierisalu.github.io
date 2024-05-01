@@ -9,6 +9,7 @@ function logInButton() {
     const password = document.querySelector('.passwordInput').value;
     login(username, password)
         .then(() => {
+            getUserData()
             document.querySelector('.loginInput').value = "";
             document.querySelector('.passwordInput').value = "";
             document.querySelector('.loginPage').style.display = 'none';

@@ -7,8 +7,11 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="icon" type="image/png" sizes="192x192" href="static/favicon-192x192.png">
     <link rel='stylesheet' type='text/css' media='screen' href='static/main.css'>
-    <script src='js/buttons.js'></script>
     <script src='js/credentials.js'></script>
+    <script src='js/buttons.js'></script>
+    <script src='js/query.js'></script>
+
+
 </head>
 <body>
     <div class="loginPage">
@@ -22,19 +25,13 @@
     <div class="indexPage">
         <div class="topBar">
             <button class="topBarUserName">topBarUserName</button>
-            <a class="topBarTitle">01</a>
+            <button class="testbutton" onclick="populateProfile()">populateProfile()</a>
             <button class="logOutButton" onclick="logOutButton()" type="button">topBarLogOut</button>
         </div>
         <div class="boxes">
-            
-            <div class="box">
-                <div class="boxData">FirstName LastName</div>
-                <div class="boxData">firstname_lastname@email</div>
-                <div class="boxData">9008855</div>
-                <div class="boxData">610222332224</div>
-                <div class="boxData">discord username??</div>
+            <div class="box" id="profile">
             </div>
-            <div class="box">
+            <div class="box" id="xp">
                 <div class="boxData">DaTa2222</div>
                 <div class="boxData">DaTa2222</div>
                 <div class="boxData">DaTa2222</div>
