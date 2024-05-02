@@ -123,24 +123,58 @@ function displayGrades(gradeData, auditRatio) {
 }
 
 function displayXps(xpData, totalXpAmount) {
-
-  document.getElementById("totalXp").innerHTML = `<div class="boxData">Total Experience Points: ${totalXpAmount} Kb</div>`;
-  
   const dataContainer = document.getElementById('xp');
   dataContainer.innerHTML = '';
 
-  xpData.forEach(item => {
-    const itemDiv = document.createElement('div');
+  document.getElementById("totalXp").innerHTML = `<div class="boxData">Total Experience Points: ${totalXpAmount} Kb</div>`;
 
-    const pathElement = document.createElement('p');
-    pathElement.textContent = `Task: ${item.path}`;
+  // Create the SVG element
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '100%'); // Adjust width as needed
 
-    const amountElement = document.createElement('p');
-    amountElement.textContent = `Experience Points: ${item.amount} Kb`;
+  // Create the group element for bars
+  const barsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-    itemDiv.appendChild(pathElement);
-    itemDiv.appendChild(amountElement);
+  // Calculate the total height based on the number of items
+  const barHeight = 20; // Adjust bar height as needed
+  const totalHeight = xpData.length * barHeight;
+  svg.setAttribute('height', totalHeight);
 
-    dataContainer.appendChild(itemDiv);
+  const maxAmount = Math.max(...xpData.map(item => item.amount));
+
+  xpData.forEach((item, index) => {
+    const barWidth = (item.amount / maxAmount) * 100; // Scale based on max amount
+
+    // Create the bar element
+    const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bar.setAttribute('x', 0);
+    bar.setAttribute('y', index * barHeight);
+    bar.setAttribute('width', barWidth + '%');
+    bar.setAttribute('height', barHeight);
+    bar.style.fill = 'darkviolet';
+
+    // Create the text element for amount
+    const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    amountText.setAttribute('x', 0); // Adjust text position as needed
+    amountText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
+    amountText.setAttribute('dominant-baseline', 'middle');
+    amountText.style.fill = 'gainsboro'; // Set text color to gainsboro
+    amountText.textContent = `${item.amount} Kb`;
+
+    // Create the text element for task
+    const taskText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    taskText.setAttribute('x', 150); // Adjust text position relative to bar width
+    taskText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
+    taskText.setAttribute('dominant-baseline', 'middle');
+    taskText.style.fill = 'gainsboro'; // Set text color to gainsboro
+    taskText.textContent = `${item.path}`;
+
+
+    barsGroup.appendChild(bar);
+    barsGroup.appendChild(amountText); // Append amount text before bar
+    barsGroup.appendChild(taskText); // Append task text after bar
   });
+
+  svg.appendChild(barsGroup);
+  dataContainer.appendChild(svg);
 }
