@@ -1,4 +1,3 @@
-
 async function login(usernameOrEmail, password) {
   const credentials = `${usernameOrEmail}:${password}`;
   const encodedCredentials = btoa(credentials);
@@ -22,12 +21,12 @@ async function login(usernameOrEmail, password) {
   return jwt;
 }
 
-  function logout() {
-    // Clear JWT from local storage
-    localStorage.removeItem('jwt');
+async function automaticLogin() {
+  if (localStorage.getItem('jwt'))  {
+      getUserData()
   }
+}
 
-
- 
-
-
+document.addEventListener('DOMContentLoaded', () => {
+  automaticLogin();
+});

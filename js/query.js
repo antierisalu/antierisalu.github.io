@@ -22,7 +22,6 @@ async function getUserData() {
                 }
               }
             }
-            
             result (where: {type: {_eq: "user_audit"}}) {
                       grade
                       path
@@ -37,25 +36,22 @@ async function getUserData() {
       const errorData = await response.json();
       throw new Error(errorData.error || "Error fetching user data");
     }
-
     const data = await response.json();
-    console.log(data);
-    
 
-    const auditRatio = data.data.user[0].auditRatio.toFixed(2)
-    const attrs = data.data.user[0].attrs;
-    const login = data.data.user[0].login
-
-    const grades = data.data.result
     const gradeData = []
-
-    const xp = data.data.user[0].xps
     const xpData = [];
     let totalXpAmount = 0;
 
+    const userData = data.data.user[0]
+    const auditRatio = userData.auditRatio.toFixed(2)
+    const attrs = userData.attrs;
+    const login = userData.login
+    const xp = userData.xps
+    const grades = data.data.result
+
     xp.forEach(item => {
       xpData.push({
-        path: item.path,
+        path: item.path.split('/').pop(),
         amount: (item.amount / 1000).toFixed(0)
       });
       totalXpAmount += item.amount / 1000
@@ -63,10 +59,9 @@ async function getUserData() {
 
     grades.forEach(item => {
       gradeData.push({
-        path: item.path,
+        path: item.path.split('/').pop(),
         grade: item.grade.toFixed(2)
       })
-
     })
 
     let {
@@ -80,6 +75,7 @@ async function getUserData() {
       personalIdentificationCode,
     } = attrs;
 
+    displayMainPage()
     displayProfile(firstName, lastName, email, tel, personalIdentificationCode, addressStreet, addressCity, addressCountry)
     displayXps(xpData, totalXpAmount)
     displayGrades(gradeData, auditRatio)
@@ -95,12 +91,13 @@ function displayProfile(firstName, lastName, email, tel, personalIdentificationC
 
   document.getElementById("profile").innerHTML = `
   <div class="boxData">${firstName} ${lastName}</div>
+  <div class="boxData">${personalIdentificationCode}</div>
   <div class="boxData">${email}</div>
   <div class="boxData">${tel}</div>
-  <div class="boxData">${personalIdentificationCode}</div>
   <div class="boxData">${addressStreet}, ${addressCity}, ${addressCountry}</div>
 `;
 }
+
 
 function displayGrades(gradeData, auditRatio) {
 

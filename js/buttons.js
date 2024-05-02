@@ -2,6 +2,7 @@ function logOutButton() {
     document.querySelector('.loginPage').style.display = 'flex';
     document.querySelector('.indexPage').style.display = 'none';
     document.querySelector('.errorOnPage').textContent = "";
+    localStorage.removeItem('jwt');
 }
 
 function logInButton() {
@@ -12,11 +13,15 @@ function logInButton() {
             getUserData()
             document.querySelector('.loginInput').value = "";
             document.querySelector('.passwordInput').value = "";
-            document.querySelector('.loginPage').style.display = 'none';
-            document.querySelector('.indexPage').style.display = 'block';
+            // displayMainPage()
         })
         .catch(error => {
             console.error(error);
             document.querySelector('.errorOnPage').textContent = error.message
         });
+}
+
+function displayMainPage () {
+    document.querySelector('.loginPage').style.display = 'none';
+    document.querySelector('.indexPage').style.display = 'block';
 }
