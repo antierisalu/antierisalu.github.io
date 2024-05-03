@@ -59,8 +59,8 @@ button, input {
     overflow-y: auto;
 }
 
-.box.xp {
-    display: flex;
+#auditXp {
+    grid-row: span 2;
 }
 
 .boxData {
