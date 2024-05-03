@@ -322,7 +322,7 @@ async function displayAudit() {
       bar.setAttribute('y', index * barHeight);
       bar.setAttribute('width', barWidth + '%');
       bar.setAttribute('height', barHeight);
-      bar.style.fill = 'magenta';
+      bar.style.fill = 'rebeccapurple';
 
       const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       amountText.setAttribute('x', 0); 
@@ -353,7 +353,7 @@ async function displayAudit() {
       bar.setAttribute('y', (index + combinedXpDownData.length) * barHeight);
       bar.setAttribute('width', barWidth + '%');
       bar.setAttribute('height', barHeight);
-      bar.style.fill = 'violet';
+      bar.style.fill = 'indigo';
 
       const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       amountText.setAttribute('x', 0); 
