@@ -57,7 +57,10 @@ button, input {
     justify-content: center;
     align-items: center;
     overflow-y: auto;
-    
+}
+
+.box.xp {
+    display: flex;
 }
 
 .boxData {

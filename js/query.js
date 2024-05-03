@@ -101,28 +101,6 @@ function displayProfile(firstName, lastName, email, tel, personalIdentificationC
 }
 
 
-// function displayGrades(gradeData, auditRatio) {
-
-//   document.getElementById("auditRatio").innerHTML = `<div class="boxData">Audit Ratio: ${auditRatio}</div>`;
-
-//   const dataContainer = document.getElementById('grades')
-//   dataContainer.innerHTML = ''
-
-//     gradeData.forEach(item => {
-//     const itemDiv = document.createElement('div')
-    
-//     const nameElement = document.createElement('p')
-//     nameElement.textContent = `Project: ${item.name}`
-
-//     const gradeElement = document.createElement('p')
-//     gradeElement.textContent = `Grade: ${item.grade}`
-
-//     itemDiv.appendChild(nameElement)
-//     itemDiv.appendChild(gradeElement)
-
-//     dataContainer.appendChild(itemDiv)
-//   })
-// }
 
 function displayGrades(gradeData, auditRatio) {
   const dataContainer = document.getElementById('grades');
@@ -132,7 +110,7 @@ function displayGrades(gradeData, auditRatio) {
 
   // Create the SVG element
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', '100%'); // Adjust width as needed
+  svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px');
 
   // Create the group element for bars
   const barsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -161,11 +139,11 @@ function displayGrades(gradeData, auditRatio) {
     amountText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
     amountText.setAttribute('dominant-baseline', 'middle');
     amountText.style.fill = 'gainsboro'; // Set text color to gainsboro
-    amountText.textContent = `${item.grade} `;
+    amountText.textContent = `Grade: ${item.grade} `;
 
     // Create the text element for task
     const taskText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    taskText.setAttribute('x', 50); // Adjust text position relative to bar width
+    taskText.setAttribute('x', 150); // Adjust text position relative to bar width
     taskText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
     taskText.setAttribute('dominant-baseline', 'middle');
     taskText.style.fill = 'gainsboro'; // Set text color to gainsboro
@@ -188,7 +166,8 @@ function displayXps(xpData, totalXpAmount) {
 
   // Create the SVG element
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', '100%'); // Adjust width as needed
+  // svg.setAttribute('width', '100%'); // Adjust width as needed
+  svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px'); // Adjust width dynamically
 
   // Create the group element for bars
   const barsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
