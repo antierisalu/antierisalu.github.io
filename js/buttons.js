@@ -13,7 +13,6 @@ function logInButton() {
             getUserData()
             document.querySelector('.loginInput').value = "";
             document.querySelector('.passwordInput').value = "";
-            // displayMainPage()
         })
         .catch(error => {
             console.error(error);
