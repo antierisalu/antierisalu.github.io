@@ -14,20 +14,19 @@ async function getUserData() {
               auditRatio
               login
               attrs
-              xps (where: { event: { id: { _eq: 148  } } } ){
-                path
-                amount
-                event {
-                  id
-                }
+            }
+            transaction(where: { type: {_eq:"xp"}, object: { type: {_eq: "project"} } }) {
+              amount
+              object {
+                name
               }
             }
             result (where: {type: {_eq: "user_audit"}}) {
-                      grade
-                      object {
-                        name
-                      }
-                    }
+              grade
+              object {
+                name
+              }
+            }
           }`,
         }),
       }
@@ -47,13 +46,13 @@ async function getUserData() {
     const auditRatio = userData.auditRatio.toFixed(2)
     const attrs = userData.attrs;
     const login = userData.login
-    const xp = userData.xps
+    const xp = data.data.transaction
     const grades = data.data.result
     console.log(grades)
 
     xp.forEach(item => {
       xpData.push({
-        path: item.path.split('/').pop(),
+        name: item.object.name,
         amount: (item.amount / 1000).toFixed(0)
       });
       totalXpAmount += item.amount / 1000
@@ -82,7 +81,7 @@ async function getUserData() {
     displayXps(xpData, totalXpAmount)
     displayGrades(gradeData, auditRatio)
 
-    document.getElementById("topBarUserName").innerHTML = login
+    document.getElementById("topBarUserName").innerHTML = `01 ${login}`
 
   } catch (error) {
     console.error("Error fetching user data:", error.message);
@@ -100,23 +99,18 @@ function displayProfile(firstName, lastName, email, tel, personalIdentificationC
 `;
 }
 
-
-
 function displayGrades(gradeData, auditRatio) {
   const dataContainer = document.getElementById('grades');
   dataContainer.innerHTML = '';
 
   document.getElementById("auditRatio").innerHTML = `<div class="boxData">Audit Ratio: ${auditRatio}</div>`;
 
-  // Create the SVG element
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px');
 
-  // Create the group element for bars
   const barsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-  // Calculate the total height based on the number of items
-  const barHeight = 20; // Adjust bar height as needed
+  const barHeight = 20; 
   const totalHeight = gradeData.length * barHeight;
   svg.setAttribute('height', totalHeight);
 
@@ -125,7 +119,6 @@ function displayGrades(gradeData, auditRatio) {
   gradeData.forEach((item, index) => {
     const barWidth = (item.grade / maxAmount) * 100; // Scale based on max amount
 
-    // Create the bar element
     const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     bar.setAttribute('x', 0);
     bar.setAttribute('y', index * barHeight);
@@ -133,25 +126,23 @@ function displayGrades(gradeData, auditRatio) {
     bar.setAttribute('height', barHeight);
     bar.style.fill = 'darkviolet';
 
-    // Create the text element for amount
     const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    amountText.setAttribute('x', 0); // Adjust text position as needed
+    amountText.setAttribute('x', 0); 
     amountText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
     amountText.setAttribute('dominant-baseline', 'middle');
-    amountText.style.fill = 'gainsboro'; // Set text color to gainsboro
+    amountText.style.fill = 'gainsboro'; 
     amountText.textContent = `Grade: ${item.grade} `;
 
-    // Create the text element for task
     const taskText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    taskText.setAttribute('x', 150); // Adjust text position relative to bar width
+    taskText.setAttribute('x', 150); 
     taskText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
     taskText.setAttribute('dominant-baseline', 'middle');
-    taskText.style.fill = 'gainsboro'; // Set text color to gainsboro
+    taskText.style.fill = 'gainsboro'; 
     taskText.textContent = `${item.name}`;
 
     barsGroup.appendChild(bar);
-    barsGroup.appendChild(amountText); // Append amount text before bar
-    barsGroup.appendChild(taskText); // Append task text after bar
+    barsGroup.appendChild(amountText);
+    barsGroup.appendChild(taskText); 
   });
 
   svg.appendChild(barsGroup);
@@ -164,16 +155,13 @@ function displayXps(xpData, totalXpAmount) {
 
   document.getElementById("totalXp").innerHTML = `<div class="boxData">Total Experience Points: ${totalXpAmount} Kb</div>`;
 
-  // Create the SVG element
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  // svg.setAttribute('width', '100%'); // Adjust width as needed
-  svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px'); // Adjust width dynamically
+  svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px'); 
 
-  // Create the group element for bars
   const barsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
   // Calculate the total height based on the number of items
-  const barHeight = 20; // Adjust bar height as needed
+  const barHeight = 20;
   const totalHeight = xpData.length * barHeight;
   svg.setAttribute('height', totalHeight);
 
@@ -182,7 +170,6 @@ function displayXps(xpData, totalXpAmount) {
   xpData.forEach((item, index) => {
     const barWidth = (item.amount / maxAmount) * 100; // Scale based on max amount
 
-    // Create the bar element
     const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     bar.setAttribute('x', 0);
     bar.setAttribute('y', index * barHeight);
@@ -190,26 +177,23 @@ function displayXps(xpData, totalXpAmount) {
     bar.setAttribute('height', barHeight);
     bar.style.fill = 'darkviolet';
 
-    // Create the text element for amount
     const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     amountText.setAttribute('x', 0); // Adjust text position as needed
     amountText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
     amountText.setAttribute('dominant-baseline', 'middle');
-    amountText.style.fill = 'gainsboro'; // Set text color to gainsboro
+    amountText.style.fill = 'gainsboro'; 
     amountText.textContent = `${item.amount} Kb`;
 
-    // Create the text element for task
     const taskText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     taskText.setAttribute('x', 150); // Adjust text position relative to bar width
     taskText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
     taskText.setAttribute('dominant-baseline', 'middle');
-    taskText.style.fill = 'gainsboro'; // Set text color to gainsboro
-    taskText.textContent = `${item.path}`;
-
+    taskText.style.fill = 'gainsboro'; 
+    taskText.textContent = `${item.name}`;
 
     barsGroup.appendChild(bar);
-    barsGroup.appendChild(amountText); // Append amount text before bar
-    barsGroup.appendChild(taskText); // Append task text after bar
+    barsGroup.appendChild(amountText);
+    barsGroup.appendChild(taskText);
   });
 
   svg.appendChild(barsGroup);

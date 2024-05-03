@@ -22,7 +22,7 @@ async function login(usernameOrEmail, password) {
 }
 
 async function automaticLogin() {
-  if (localStorage.getItem('jwt'))  {
+  if (localStorage.getItem('jwt') || localStorage.getItem('hasura-jwt-token'))  {
       getUserData()
   }
 }

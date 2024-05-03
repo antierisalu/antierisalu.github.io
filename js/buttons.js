@@ -24,3 +24,7 @@ function displayMainPage () {
     document.querySelector('.loginPage').style.display = 'none';
     document.querySelector('.indexPage').style.display = 'block';
 }
+
+function openInNewTab(url) {
+    window.open(url, '_blank');
+  }
