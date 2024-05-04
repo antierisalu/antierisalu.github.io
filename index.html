@@ -7,18 +7,20 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="icon" type="image/png" sizes="192x192" href="static/favicon-192x192.png">
     <link rel='stylesheet' type='text/css' media='screen' href='static/main.css'>
-    <script src='js/credentials.js'></script>
+    <script src='js/credentials.js' defer></script>
     <script src='js/buttons.js'></script>
     <script src='js/query.js'></script>
 </head>
 <body>
+    <form id="loginForm">
     <div class="loginPage">
-        <a>Login with 01 credentials</a><br>
-        <input class="loginInput" placeholder="Username or E-mail"><br>
-        <input class="passwordInput" type="password" placeholder="Password"><br>
-        <button class="logInButton" onclick="logInButton()" type="button">Login</button><br>
-        <a class="errorOnPage" href="/"></a>
+        Login with 01 credentials
+        <input class="loginInput" placeholder="Username or E-mail">
+        <input class="passwordInput" type="password" placeholder="Password">
+        <button class="logInButton" onclick="logInButton()" type="submit">Login</button>
+        <div class="errorOnPage" href="/"></div>
     </div>
+    </form>
 
     <div class="indexPage">
         <div class="topBar">

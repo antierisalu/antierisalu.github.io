@@ -1,9 +1,12 @@
 function getUserData() {
-  displayMainPage()
-  displayProfile()
-  displayXps()
-  displayGrades()
-  displayAudit()
+  displayMainPage();
+  
+  let functions = [displayProfile, displayXps, displayGrades, displayAudit];
+  functions.forEach((func) => {
+      func().catch((err) => {
+          console.error(`function ${func.name}: ${err.message}`);
+      });
+  });
 }
 
 function combineDuplicates(data) {
@@ -24,7 +27,7 @@ function combineDuplicates(data) {
 }
 
 async function makeQuery(query) {
-  try {
+ 
   const response = await fetch(
     "https://01.kood.tech/api/graphql-engine/v1/graphql",
     {
@@ -44,14 +47,11 @@ async function makeQuery(query) {
   const data = await response.json();
   return data
 
-} catch (error) {
-  console.error("Error fetching user data:", error.message);
-}
 
 }
 
 async function displayProfile() {
-  try {
+
   let userQuery = `{
     user{
       auditRatio
@@ -87,13 +87,11 @@ async function displayProfile() {
   <div class="boxData">${tel}</div>
   <div class="boxData">${addressStreet}, ${addressCity}, ${addressCountry}</div>
 `;
-} catch (error) {
-  console.error("Error fetching user data:", error.message);
-}
+
 }
 
 async function displayXps() {
-try {
+
   let xpQuery = `{
     transaction(where: { type: {_eq:"xp"}, object: { type: {_eq: "project"} } }) {
       amount
@@ -116,7 +114,7 @@ try {
     totalXpAmount += item.amount / 1000
   });
 
-  xpData.sort((a, b) => a.amount - b.amount)
+  xpData.sort((a, b) => b.amount - a.amount)
 
   const dataContainer = document.getElementById('xp');
   dataContainer.innerHTML = '';
@@ -167,13 +165,10 @@ try {
   svg.appendChild(barsGroup);
   dataContainer.appendChild(svg);
 
-} catch (error) {
-  console.error("Error fetching xps:", error.message);
-}
 }
 
 async function displayGrades() {
-  try {
+  
     let gradeQuery = `{
       result (where: {type: {_eq: "user_audit"}}) {
         grade
@@ -242,14 +237,12 @@ async function displayGrades() {
   svg.appendChild(barsGroup);
   dataContainer.appendChild(svg);
 
-} catch (error) {
-  console.error("Error fetching grades:", error.message);
-}
+
 }
 
   
 async function displayAudit() {
-  try {
+  
     const downQuery = `{
       transaction(where: { type: {_eq:"down"}, object: { type: {_eq: "project"}} }) {
         amount
@@ -382,7 +375,4 @@ async function displayAudit() {
     svg.appendChild(barsGroup);
     dataContainer.appendChild(svg);
 
-  } catch (error) {
-    console.error(error);
-  }
 }

@@ -27,6 +27,9 @@ async function automaticLogin() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  automaticLogin();
+automaticLogin();
+
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  logInButton();
 });
