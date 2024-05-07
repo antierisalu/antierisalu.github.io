@@ -63,6 +63,7 @@ button, input {
     justify-content: center;
     align-items: center;
     overflow-y: auto;
+    justify-items: center;
 }
 
 #auditXp {
