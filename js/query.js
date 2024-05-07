@@ -119,7 +119,7 @@ async function displayXps() {
   const dataContainer = document.getElementById('xp');
   dataContainer.innerHTML = '';
 
-  document.getElementById("totalXp").innerHTML = `<div class="boxData">Total Experience Points: ${totalXpAmount} Kb</div>`;
+  document.getElementById("totalXp").innerHTML = `<div class="boxData">Total Experience Points: ${totalXpAmount.toFixed(2)} Kb</div>`;
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px'); 
@@ -167,78 +167,117 @@ async function displayXps() {
 
 }
 
+
 async function displayGrades() {
-  
-    let gradeQuery = `{
+  let gradeQuery = `{
       result (where: {type: {_eq: "user_audit"}}) {
-        grade
-        object {
-          name
-        }
+          grade
+          object {
+              name
+          }
       }
-    }`
+  }`
 
-    const data = await makeQuery(gradeQuery)
-    const gradeData = []
-    const grades = data.data.result
+  const data = await makeQuery(gradeQuery)
+  const gradeData = []
+  const grades = data.data.result
 
-    grades.forEach(item => {
+  grades.forEach(item => {
       gradeData.push({
-        name: item.object.name,
-        grade: item.grade.toFixed(2)
+          name: item.object.name,
+          grade: item.grade.toFixed(2)
       })
-    })
+  })
 
-  gradeData.sort((a, b) => a.grade - b.grade)
+  gradeData.sort((a, b) => b.grade - a.grade) // Sort from highest to lowest grade
 
+  console.log(gradeData)
   const dataContainer = document.getElementById('grades');
   dataContainer.innerHTML = '';
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', (dataContainer.clientWidth - 50) + 'px');
+  const containerWidth = dataContainer.clientWidth; // Get the width of the container
+  svg.setAttribute('width', containerWidth + 'px');
 
   const barsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-  const barHeight = 20; 
-  const totalHeight = gradeData.length * barHeight;
-  svg.setAttribute('height', totalHeight);
+  const spacing = 5; // Adjust spacing between bars
+  const totalBars = gradeData.length;
+
+  // Calculate total width available for bars
+  const totalBarWidth = containerWidth - (spacing * (totalBars));
+  const barWidth = totalBarWidth / totalBars;
+
+  const containerHeight = dataContainer.clientHeight - 50;
+
+  svg.setAttribute('height', containerHeight + 'px');
 
   const maxAmount = Math.max(...gradeData.map(item => item.grade));
 
+  const taskTextElements = [];
+
+  // Variable to store previously hovered taskText element (initially null)
+  let previouslyHoveredTaskText = null;
+
   gradeData.forEach((item, index) => {
-    const barWidth = (item.grade / maxAmount) * 100; // Scale based on max amount
+      const barHeight = (item.grade / maxAmount) * containerHeight; // Scale based on max amount
 
-    const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    bar.setAttribute('x', 0);
-    bar.setAttribute('y', index * barHeight);
-    bar.setAttribute('width', barWidth + '100');
-    bar.setAttribute('height', barHeight);
-    bar.style.fill = 'darkviolet';
+      const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bar.setAttribute('x', index * (barWidth + spacing)); 
+      bar.setAttribute('y', containerHeight - barHeight); 
+      bar.setAttribute('width', barWidth);
+      bar.setAttribute('height', barHeight);
+      bar.style.fill = 'darkviolet';
+      bar.addEventListener('mouseover', handleMouseOver); 
 
-    const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    amountText.setAttribute('x', 0); 
-    amountText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
-    amountText.setAttribute('dominant-baseline', 'middle');
-    amountText.style.fill = 'gainsboro'; 
-    amountText.textContent = `Grade: ${item.grade} `;
+      const amountText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      amountText.setAttribute('x', index * (barWidth + spacing) + barWidth / 2);
+      amountText.setAttribute('y', containerHeight - barHeight + spacing); // Adjust position for text
+      amountText.setAttribute('text-anchor', 'start'); // Center text horizontally
+      amountText.setAttribute('transform', `rotate(90 ${index * (barWidth + spacing) + barWidth / 2}, ${containerHeight - barHeight})`);
+      amountText.style.fill = 'gainsboro';
+      amountText.textContent = `${item.grade}`;
 
-    const taskText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    taskText.setAttribute('x', 150); 
-    taskText.setAttribute('y', index * barHeight + barHeight / 2); // Center text vertically
-    taskText.setAttribute('dominant-baseline', 'middle');
-    taskText.style.fill = 'gainsboro'; 
-    taskText.textContent = `${item.name}`;
+      const taskText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      taskText.setAttribute('x', containerWidth / 2);
+      taskText.setAttribute('y', containerHeight / 6); // Adjust position for text
+      taskText.setAttribute('text-anchor', 'middle'); // Center text horizontally
+      taskText.setAttribute('data-type', 'taskText')
+      taskText.style.fill = 'gainsboro';
+      taskText.textContent = `${item.name}`;
+      taskText.style.display = 'none';  
+      
+      taskTextElements.push(taskText); 
 
-    barsGroup.appendChild(bar);
-    barsGroup.appendChild(amountText);
-    barsGroup.appendChild(taskText); 
+      barsGroup.appendChild(bar);
+      barsGroup.appendChild(amountText);
+      barsGroup.appendChild(taskText);
   });
 
   svg.appendChild(barsGroup);
   dataContainer.appendChild(svg);
 
+  function handleMouseOver(event) {
+    const hoveredBar = event.target;
+    const hoveredBarIndex = [...hoveredBar.parentElement.children]
+  .filter(child => child.tagName !== 'text') // Filter out text elements (assuming taskText is text)
+  .indexOf(hoveredBar);
+
+    // Access and update position of corresponding taskText
+    const hoveredTaskText = taskTextElements[hoveredBarIndex];
+    hoveredTaskText.style.display = 'block'
+    // Reset previous hovered taskText (if any)
+    if (previouslyHoveredTaskText) {
+      previouslyHoveredTaskText.style.display = 'none'
+    }
+  
+    // Update previouslyHoveredTaskText for next hover
+    previouslyHoveredTaskText = hoveredTaskText;
+  }
+
 
 }
+
 
   
 async function displayAudit() {
